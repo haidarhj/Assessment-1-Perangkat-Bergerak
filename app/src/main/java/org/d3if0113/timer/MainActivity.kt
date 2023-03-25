@@ -42,7 +42,23 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("timeLeftInMillis", timeLeftInMillis)
+        outState.putBoolean("timerRunning", timerRunning)
+        if (timerRunning) {
+            countDownTimer.cancel()
+        }
+    }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        timeLeftInMillis = savedInstanceState.getLong("timeLeftInMillis")
+        timerRunning = savedInstanceState.getBoolean("timerRunning")
+        updateTimer()
+        if (timerRunning) {
+            startTimer(timeLeftInMillis)
+        }
+    }
     private fun startTimer(timeInMillis: Long) {
         timeLeftInMillis = timeInMillis
         countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
