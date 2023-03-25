@@ -1,6 +1,7 @@
 package org.d3if0113.timer
 
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Toast
@@ -14,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var countDownTimer: CountDownTimer
     private var timeLeftInMillis = 0L // inisialisasi waktu yang tersisa ke nol
     private var timerRunning = false // status timer
-
+    private lateinit var mediaPlayer: MediaPlayer // media Player
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        //Untuk Mengganti Lagu MediaPlayer
+        mediaPlayer = MediaPlayer.create(this, R.raw.lagu)
 
         binding.tombolStop.setOnClickListener {
             if (timerRunning) {
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
+
+   //Untuk Dapat menggunakan Mode Landscape
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("timeLeftInMillis", timeLeftInMillis)
@@ -72,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 timerRunning = false
                 updateTimer()
+                mediaPlayer.start()
             }
         }.start()
 
