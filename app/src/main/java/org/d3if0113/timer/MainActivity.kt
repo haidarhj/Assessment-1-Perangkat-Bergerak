@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         }
         //Untuk Mengganti Lagu MediaPlayer
         mediaPlayer = MediaPlayer.create(this, R.raw.lagu)
+        //Tombol Untuk Menstop Musik
+        binding.tombolStopMusik.setOnClickListener {
+            stopMusic()
+        }
 
         binding.tombolStop.setOnClickListener {
             if (timerRunning) {
@@ -55,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             countDownTimer.cancel()
         }
     }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         timeLeftInMillis = savedInstanceState.getLong("timeLeftInMillis")
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             startTimer(timeLeftInMillis)
         }
     }
+
     private fun startTimer(timeInMillis: Long) {
         timeLeftInMillis = timeInMillis
         countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
@@ -83,13 +89,23 @@ class MainActivity : AppCompatActivity() {
 
         timerRunning = true
     }
+
     private fun stopTimer() {
         countDownTimer.cancel()
         timerRunning = false
         timeLeftInMillis = 0
         updateTimer()
+    }
+
+   //Fungsi Stop Music
+    private fun stopMusic() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+            mediaPlayer.prepare()
+        }
 
     }
+
     private fun updateTimer() {
         val minutes = (timeLeftInMillis / 1000 / 60).toInt()
         val seconds = (timeLeftInMillis / 1000 % 60).toInt()

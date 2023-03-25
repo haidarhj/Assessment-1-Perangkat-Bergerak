@@ -29,14 +29,16 @@
         android:id="@+id/tombol_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MULAI"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:text="MULAI" />
+
     <Button
         android:id="@+id/tombol_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stop"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:text="Stop" />
+
     <Button
         android:id="@+id/tombol_StopMusik"
         android:layout_width="wrap_content"
