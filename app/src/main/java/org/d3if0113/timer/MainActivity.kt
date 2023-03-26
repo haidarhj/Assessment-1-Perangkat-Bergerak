@@ -4,6 +4,7 @@ package org.d3if0113.timer
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.d3if0113.timer.databinding.ActivityMainBinding
@@ -84,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 timerRunning = false
                 updateTimer()
                 mediaPlayer.start()
+                binding.tombolStopMusik.visibility = View.VISIBLE // Tampilkan tombol "Stop Music"
             }
         }.start()
 
@@ -103,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             mediaPlayer.stop()
             mediaPlayer.prepare()
         }
-
+       binding.tombolStopMusik.visibility = View.GONE // Sembunyikan tombol "Stop Music"
     }
 
     private fun updateTimer() {
