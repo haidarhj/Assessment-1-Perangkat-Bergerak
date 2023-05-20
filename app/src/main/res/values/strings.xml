@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Timer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="copyright">Aplikasi countdown timer adalah aplikasi untuk hitung mundur waktu dengan suara alarm. Bisa digunakan untuk rapat, ujian, atau olahraga. Ada notifikasi waktu habisnya juga. Ada di smartphone atau laptop.</string>
+    <string name="histori">Histori</string>
+    <string name="tentang_aplikasi">Tentang Aplikasi</string>
+    <string name="hapus_histori">Hapus Histori</string>
 </resources>
