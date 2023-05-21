@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import org.d3if0113.timer.R
+import org.d3if0113.timer.databinding.FragmentAboutBinding
 import org.d3if0113.timer.databinding.FragmentMainBinding
 
 
@@ -19,6 +22,8 @@ class MainFragment : Fragment() {
     private var timerRunning = false
     private lateinit var mediaPlayer: MediaPlayer
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,8 +33,18 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.tombolAbout.setOnClickListener{
+            Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_aboutFragment)
+
+
+        }
+
 
         binding.tombolStart.setOnClickListener {
             if (!timerRunning) {
@@ -114,11 +129,13 @@ class MainFragment : Fragment() {
         }
         binding.tombolStopMusik.visibility = View.GONE
     }
-
     private fun updateTimer() {
         val minutes = (timeLeftInMillis / 1000 / 60).toInt()
         val seconds = (timeLeftInMillis / 1000 % 60).toInt()
         val timeLeftFormatted = String.format("%02d:%02d", minutes, seconds)
         binding.textTimer.text = timeLeftFormatted
     }
+
+
+
 }

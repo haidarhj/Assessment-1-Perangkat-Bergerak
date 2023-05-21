@@ -1,24 +1,30 @@
 package org.d3if0113.timer
 
-
+import MainFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var navController: NavController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.fragment_main)
 
-        navController = findNavController(R.id.fragmentContainerView)
-        NavigationUI.setupActionBarWithNavController(this, navController)
-    }
+        // Create an instance of your fragment
+        val fragment = MainFragment()
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        // Get the FragmentManager
+        val fragmentManager = supportFragmentManager
+
+        // Begin a new FragmentTransaction
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // Replace the container with the fragment
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+
+        // Commit the transaction
+        fragmentTransaction.commit()
     }
 }
