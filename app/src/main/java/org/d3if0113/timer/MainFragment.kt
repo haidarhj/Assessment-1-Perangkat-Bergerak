@@ -1,5 +1,3 @@
-package org.d3if0113.timer
-
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,35 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import org.d3if0113.timer.databinding.ActivityMainBinding
+import org.d3if0113.timer.R
 import org.d3if0113.timer.databinding.FragmentMainBinding
 
+
 class MainFragment : Fragment() {
-    lateinit var binding: FragmentMainBinding
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var countDownTimer: CountDownTimer
+    private var timeLeftInMillis = 0L
+    private var timerRunning = false
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentMainBinding.inflate(layoutInflater, container, false)
-        return  binding.root
+    ): View {
+        _binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    }
-
-
-    private lateinit var countDownTimer: CountDownTimer
-    private var timeLeftInMillis = 0L // inisialisasi waktu yang tersisa ke nol
-    private var timerRunning = false // status timer
-    private lateinit var mediaPlayer: MediaPlayer // media Player
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         binding.tombolStart.setOnClickListener {
             if (!timerRunning) {
@@ -45,14 +38,12 @@ class MainFragment : Fragment() {
                     val timeInMillis = input.toLong() * 1000
                     startTimer(timeInMillis)
                 } else {
-                    Toast.makeText(this, "Masukkan waktu terlebih dahulu", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(requireContext(), "Masukkan waktu terlebih dahulu", Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        //Untuk Mengganti Lagu MediaPlayer
-        mediaPlayer = MediaPlayer.create(this, R.raw.lagu)
-        //Tombol Untuk Menstop Musik
+
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.lagu)
         binding.tombolStopMusik.setOnClickListener {
             stopMusic()
         }
@@ -60,13 +51,10 @@ class MainFragment : Fragment() {
         binding.tombolStop.setOnClickListener {
             if (timerRunning) {
                 stopTimer()
-
             }
-
         }
     }
 
-    //Untuk Dapat menggunakan Mode Landscape
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putLong("timeLeftInMillis", timeLeftInMillis)
@@ -76,21 +64,26 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        timeLeftInMillis = savedInstanceState.getLong("timeLeftInMillis")
-        timerRunning = savedInstanceState.getBoolean("timerRunning")
-        updateTimer()
-        if (timerRunning) {
-            startTimer(timeLeftInMillis)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            timeLeftInMillis = savedInstanceState.getLong("timeLeftInMillis")
+            timerRunning = savedInstanceState.getBoolean("timerRunning")
+            updateTimer()
+            if (timerRunning) {
+                startTimer(timeLeftInMillis)
+            }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun startTimer(timeInMillis: Long) {
         timeLeftInMillis = timeInMillis
         countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
-
-
             override fun onTick(millisUntilFinished: Long) {
                 timeLeftInMillis = millisUntilFinished
                 updateTimer()
@@ -100,7 +93,7 @@ class MainFragment : Fragment() {
                 timerRunning = false
                 updateTimer()
                 mediaPlayer.start()
-                binding.tombolStopMusik.visibility = View.VISIBLE // Tampilkan tombol "Stop Music"
+                binding.tombolStopMusik.visibility = View.VISIBLE
             }
         }.start()
 
@@ -114,13 +107,12 @@ class MainFragment : Fragment() {
         updateTimer()
     }
 
-    //Fungsi Stop Music
     private fun stopMusic() {
         if (mediaPlayer.isPlaying) {
             mediaPlayer.stop()
             mediaPlayer.prepare()
         }
-        binding.tombolStopMusik.visibility = View.GONE // Sembunyikan tombol "Stop Music"
+        binding.tombolStopMusik.visibility = View.GONE
     }
 
     private fun updateTimer() {
